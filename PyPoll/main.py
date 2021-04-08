@@ -47,26 +47,53 @@ with open(csv_path, newline='', encoding = 'latin1') as csvfile:
 		temp_percent = round((num/total_votes) * 100, 2)
 		percent_votes.append(temp_percent) 
 
-	print(cand_names)
-	print(votes)
-	print(percent_votes)
 
-
-
-
-
-
-
-
-
-
+#identify winner
+wvotes = 0
+for i in range(0, len(cand_names)-1, 1):
+	if votes[i] > wvotes:
+		wvotes = votes[i]
+		winner = cand_names[i]
 
 
 
 #--------------------------------------------------------------------------------------------------
-# Print Results
+# Print Results to turminal
 #--------------------------------------------------------------------------------------------------
-#print(f"Election Results")
-#print(f"----------------------------------------------------------------------------------")
-#print(f"Total Votes: {vote_count}")
-#print(f"----------------------------------------------------------------------------------")
+print(f"Election Results")
+print(f"----------------------------------------------------------------------------------")
+print(f"Total Votes: {total_votes}")
+print(f"----------------------------------------------------------------------------------")
+for i in range(len(cand_names)):
+	candidate_name = str(cand_names[i])
+	candidate_perc = str(percent_votes[i])
+	candidate_votes = str(votes[i])
+
+	print(f"{candidate_name}: {candidate_perc}% ({candidate_votes})")
+
+print(f"----------------------------------------------------------------------------------")
+print(f"Winner: {winner}")
+print(f"----------------------------------------------------------------------------------")
+
+
+#--------------------------------------------------------------------------------------------------
+# Print Results as text file
+#--------------------------------------------------------------------------------------------------
+data_output = os.path.join("..", "Analysis", "Poll_Analysis.txt")
+with open(data_output, "w") as txtfile:
+	writer = csv.writer(txtfile)
+
+	writer.writerow([f"Election Results"])
+	writer.writerow([f"----------------------------------------------------------------------------------"])
+	writer.writerow([f"Total Votes: {total_votes}"])
+	writer.writerow([f"----------------------------------------------------------------------------------"])
+	for i in range(len(cand_names)):
+		candidate_name = str(cand_names[i])
+		candidate_perc = str(percent_votes[i])
+		candidate_votes = str(votes[i])
+
+		writer.writerow([f"{candidate_name}: {candidate_perc}% ({candidate_votes})"])
+
+	writer.writerow([f"----------------------------------------------------------------------------------"])
+	writer.writerow([f"Winner: {winner}"])
+	writer.writerow([f"----------------------------------------------------------------------------------"])
